@@ -143,7 +143,7 @@ SELECT SUM(salaire*12) FROM employes; -- On affiche ici la somme de tout les sal
 
 SELECT SUM(salaire) FROM employes;
 
-
+ 
 -- MIN et MAX
 
 SELECT MIN(salaire) FROM employes; -- On affiche le salaire minimum des employés
@@ -220,4 +220,54 @@ UPDATE employes SET salaire=1500;
 
 -- REPLACE
 
-REPLACE INTO employes (id_employes,prenom, nom,sexe,service,date_embauche,salaire) VALUES (2000, 'test', 'test','m','information','2021-06-01', 2500);
+REPLACE INTO employes (id_employes,prenom, nom,sexe,service,date_embauche,salaire) VALUES (2000, 'test', 'test','m','information','2021-06-01', 2500); -- Ici nous n'avons pas d'entrée avec un id 2000 donc ça en créer un
+
+REPLACE INTO employes (id_employes,prenom, nom,sexe,service,date_embauche,salaire) VALUES (2000, 'test', 'test','m','information','2021-06-01', 4500); -- Ici nous avons une entrée avec un id 2000, donc ca va modifier les valeurs 
+
+---------------------------------------------------------
+
+-- REQUETES DE SUPRESSION
+
+-- DELETE
+
+DELETE FROM employes WHERE id_employes=900; -- Supprime l'employé ayant l'id 900
+
+DELETE FROM employes WHERE id_employes=417 OR id_employes=627; -- Supprime les deux employés avec leur id respectif. On utilise OR car l'id étant unique, seul OR lui permet de saisir qu'il doit supprimer plusieurs employés
+
+-- A NE PAS FAIRE : un DELETE sans clause WHERE
+
+DELETE FROM employes; -- Revient à vider la table entière
+
+
+
+
+
+
+
+
+
+-- ***************************
+-- Exercices
+-- ***************************
+-- 1. Afficher le service de l'employé 547
+SELECT service FROM employes WHERE id_employes = '547';
+-- 2. Afficher la date d'embauche d'Amandine
+SELECT date_embauche FROM employes WHERE prenom = 'Amandine';
+-- 3. Afficher le nombre de commerciaux
+SELECT COUNT(id_employes) FROM employes WHERE service = 'commercial';
+-- 4. Afficher le salaire des commerciaux sur 1 année
+SELECT salaire*12 FROM employes WHERE service ='commercial';
+-- 5. Afficher le salaire moyen par service
+SELECT service, AVG(salaire) AS salaire_annuel FROM employes GROUP BY service;
+-- 6. Afficher le nombre de recrutement sur 2010
+SELECT COUNT(id_employes) FROM employes WHERE date_embauche BETWEEN '2010-01-01' AND '2010-12-31';
+-- 7. Augmenter le salaire de chaque employés de 100
+
+-- 8. Afficher le nombre de services DIFFERENTS
+SELECT COUNT(DISTINCT service) FROM employes;
+-- 9. Afficher le nombre d'employés par service
+SELECT service, COUNT(id_employes) AS nbr_employes FROM employes GROUP BY service;
+-- 10. Afficher les informations de l'employé du service commercial gagnant le salaire le plus élevé
+SELECT * FROM employes WHERE service = 'commercial' ORDER BY salaire DESC LIMIT 1;
+-- 11. Afficher l'employé ayant été embauché en dernier
+SELECT nom, prenom FROM emplyes ORDER BY date_embauche DESC LIMIT 1;
