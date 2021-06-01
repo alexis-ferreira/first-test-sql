@@ -166,3 +166,58 @@ SELECT AVG(salaire) FROM employes; -- Affiche le salaire moyen des employés
 SELECT ROUND( AVG(salaire),1 ) FROM employes; -- Arrondi le résultat du salaire moyen -- Le ,1 arrondi un chiffre après la virgule
 
 SELECT COUNT(id_employes) FROM employes WHERE sexe='f'; -- Affiche combien d'employé sont de sexe féminin
+
+-- IN 
+
+SELECT prenom, service FROM employes WHERE service IN ('comptabilite', 'informatique'); -- On affiche le prénom et le service des employés étant dans le service comptabilité ou informatique
+
+-- NOT IN
+
+SELECT prenom, service FROM employes WHERE service NOT IN ('comptabilite', 'informatique'); -- On affiche le prénom et le service des employés n'étant PAS dans les services comptabilité ou informatique
+
+-- AND et OR
+
+SELECT prenom, salaire, service FROM employes WHERE service = 'commercial' AND salaire <= 2000; -- On affiche le prénom, le salaire et le service des employé travaillant en tant que commercial auxquel leur salaire est plus petit ou égal à 2000
+
+SELECT prenom, salaire, service FROM employes WHERE service = 'production' AND salaire = 1900 OR salaire = 2300; -- On affiche le prénom, le salaire et le service des employé travaillant en production auxquel leur salaire égale à 1900 OU des employés qui ont un salaire égal à 2300
+
+-- REVIENT A ECRIRE
+SELECT prenom, salaire, service FROM employes WHERE (service = 'production' AND salaire=1900) OR (service = 'production' AND salaire = 2300);
+
+
+-- GROUP BY
+SELECT service, COUNT(id_employes) AS nombre_employes FROM employes GROUP BY service; -- Affiche le nom du service et le nombre d'employé travaillant dedans
+
+-- GROUP BY ... HAVING (GROUPER PAR ... AYANT)
+
+SELECT service, COUNT(id_employes) AS nombre_employes FROM employes GROUP BY service HAVING nombre_employes >1; -- Affiche le nom du service et le nombre d'employé travaillant dedans et ou il y a plus d'un employé
+
+-- Attention à l'ordre des mot cl"s :
+-- SELECT ... FROM ... WHERE ... GROUP BY ... ORDER BY ... LIMIT ...
+
+---------------------------- REQUETES D'INSERTION --------------------------
+
+-- INSERT INTO
+
+-- Insertion d'un nouvel employe -- Les champs entre les premières () et les secondes doivent être renseignés dans le même ordre
+
+INSERT INTO employes (prenom,nom,sexe,service,date_embauche,salaire) VALUES ('Alexis', 'Ferreira', 'm', 'informatique', '2021-05-31', 32420);
+
+-- Même chose mais nécéssite de remplir tout les champs en table y compris l'ID définit sur NULL car en auto-incrémentation en BDD
+
+INSERT INTO employes VALUES (NULL, 'Mark', 'Zuckerberg','m', 'Assistant','2021-05-31', 1200);
+
+
+
+--------------- REQUETES DE MODIFICATION --------------------
+
+-- UPDATE
+
+UPDATE employes SET salaire = 4500 WHERE id_employes = 992; -- Ici on modifie le salaire de l'id 992 (On utilise l'id dans le WHERE car il est le seul a être unique)
+
+-- A NE PAS FAIRE SANS CLAUSE WHERE LORSQUE L'ON SOUHAITE MODIFIER SEULE UNE OU QUELQUES ENTREES
+UPDATE employes SET salaire=1500;
+
+-- REPLACE
+
+REPLACE INTO employes (id_employes,prenom, nom,sexe,service,date_embauche,salaire) VALUES (2000, 'test', 'test','m','information','2021-06-01', 2500);
